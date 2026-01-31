@@ -6,14 +6,14 @@ import { Toaster } from 'react-hot-toast';
 import Fashon from "./pasgs/fashon/Fashon";
 import LifeSt from "./pasgs/lifest/LifeSt";
 import Elctronic from "./pasgs/elctronic/Elctronic";
-import Product from "./common/product/product";
+import Product from "./common/product/Product";
 import Login from "./pasgs/login/Login";
 import Register from "./pasgs/register/Register";
 import Profile from "./pasgs/profile/Profile";
 import FavPro from "./pasgs/favpro/FavPro";
 import Deals from "./common/deals/Deals";
 import Contact from "./common/contact/Contact";
-import About from "./common/about/about";
+import About from "./common/about/About";
 import Orders from "./pasgs/placeorder/Orders";
 import ProtectedRoute from "./components/ProtectedRoute";
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import Product from '../../common/product/product'
+import Product from '../../common/product/Product'
 
 function Products() {
   return (
