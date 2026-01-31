@@ -5,7 +5,6 @@
             "destination": "/index.html"
         }
     ],
-    "env": {
-        "VITE_API_URL": "https://your-backend-url.vercel.app"
-    }
+    "buildCommand": "npm install && npm run build",
+    "outputDirectory": "dist"
 }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@vitejs/plugin-react": "^5.1.0",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "firebase": "^12.5.0",
@@ -24,6 +25,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.5",
     "sweetalert2": "^11.26.3",
+    "vite": "npm:rolldown-vite@7.2.2",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -31,15 +33,13 @@
     "@tailwindcss/postcss": "^4.1.18",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^5.1.0",
     "autoprefixer": "^10.4.23",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.19",
-    "vite": "npm:rolldown-vite@7.2.2"
+    "tailwindcss": "^3.4.19"
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.2.2"
