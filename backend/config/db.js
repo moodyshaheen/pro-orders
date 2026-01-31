@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const connectDb = async () => {
    try {
-      const mongoUri = process.env.MONGODB_URI || "mongodb+srv://moshaheen616_db_user:123456mo@cluster0.hyhkcmv.mongodb.net/?appName=Cluster0";
+      const mongoUri = process.env.MONGODB_URI || "mongodb+srv://moshaheen616_db_user:123456@cluster0.xhgf2xx.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0";
 
       console.log("🔄 Attempting to connect to MongoDB...");
       console.log("📍 Connection URI:", mongoUri.replace(/\/\/.*@/, '//***:***@')); // Hide credentials in logs
