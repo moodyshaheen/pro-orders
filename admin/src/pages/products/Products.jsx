@@ -4,7 +4,13 @@ import axios from "axios";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL || "https://pro-orders-46b5.vercel.app";
+  
+  // Debug logging
+  console.log("🔗 Admin Panel API URL:", url);
+  console.log("🌍 Environment:", import.meta.env.MODE);
+  console.log("📝 VITE_API_URL:", import.meta.env.VITE_API_URL);
+  
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
