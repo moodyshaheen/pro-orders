@@ -35,6 +35,11 @@ const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
   try {
+    // Check required fields
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
     if (await userModel.findOne({ email })) {
       return res.status(400).json({ success: false, message: "User with this email already exists" });
     }
@@ -42,7 +47,6 @@ const registerUser = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ success: false, message: "Invalid Email" });
     }
-
 
     if (password.length < 8) {
       return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
@@ -56,7 +60,6 @@ const registerUser = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      passwordConfirm: hashedPassword,
     });
 
     const user = await newUser.save();
