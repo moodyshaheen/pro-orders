@@ -1,0 +1,112 @@
+.SessionNum{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    background-color: #2a3648;
+    padding: 4rem 6rem;
+    color: #fff;
+}
+.SessionNum .immgcon{
+    width: 45%;
+    height: 50%;
+}
+.SessionNum .immgcon img{
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    object-fit: cover;
+
+}
+.SessionNum .information{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.SessionNum .information .pspanfft{
+
+}
+.SessionNum .information .pspanfft h3{
+font-size: 2.25rem;
+font-weight: 700;
+line-height: 2.5rem;
+margin-bottom: 1rem;
+}
+.SessionNum .information .pspanfft p{
+font-size: 1.25rem;
+line-height: 1.75rem;
+margin-bottom: 1.5rem;
+opacity: 0.9;
+}
+.SessionNum .information .date{
+display: flex;
+margin-top: 30px;
+margin-right: 12rem;
+}
+.SessionNum .information .date .days{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 5px;
+
+}
+.SessionNum .information .date .days b{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+     padding: .75rem ;
+    background-color: #576170;
+    margin-left: 2rem;
+    border-radius: 6px;
+}
+.SessionNum .information .date .days span{
+        font-size: .875rem;
+    line-height: 1.25rem;
+        margin-top: .25rem;
+        opacity: .75;
+    margin-left: 1.65rem;
+
+
+}
+.SessionNum .information .bdfstn{
+margin-right: 23.5rem;
+
+}
+.SessionNum .information .bdfstn .fsdfkrl{
+background: #111827;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .9s;
+  outline: none;
+  margin-top: 50px;
+  margin-left: 1.60rem;
+}
+
+.SessionNum .information .bdfstn .fsdfkrl:hover{
+  color: black;
+  background-color: #fff;
+}
+@media screen and (max-width:900px) {
+.SessionNum{
+    flex-direction: column;
+    gap: 80px;
+}
+.SessionNum .information .bdfstn .fsdfkrl {
+    display: none;
+}
+
+}
+@media screen and (max-width:640px) {
+.SessionNum{
+    flex-direction: column;
+    gap: 80px;
+}
+.SessionNum .information .bdfstn .fsdfkrl {
+    display: none;
+}
+
+}

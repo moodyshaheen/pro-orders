@@ -1,0 +1,221 @@
+/* 🌟 صفحة الطلبات العامة */
+.orders-page {
+  padding: 60px 20px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.orders-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #222;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.orders-title span {
+  color: #ddc004;
+}
+
+.orders-subtitle {
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* 🌀 التحميل */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  padding: 30px;
+}
+
+/* 📦 حالة عدم وجود طلبات */
+.no-orders {
+  text-align: center;
+  margin-top: 50px;
+  color: #555;
+}
+
+.no-orders .empty-icon {
+  font-size: 3rem;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+/* 🧾 حاوية الطلبات */
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* 🧍‍♂️ بطاقة الطلب */
+.order-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* 🔹 رأس الطلب */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.order-header h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status.delivered {
+  background-color: #e6f4ea;
+  color: #28a745;
+}
+
+.status.placed {
+  background-color: #e7f1ff;
+  color: #007bff;
+}
+
+/* 🛒 المنتجات داخل الطلب */
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+.order-item:hover {
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.order-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.order-details {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.order-details h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.order-details p {
+  margin: 3px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* 🗑️ زر الحذف */
+.delete-btn {
+  background: #1e293b; /* أزرق غامق */
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+.fsdf{
+   color: #fff;
+   font-size: 15px;
+}
+
+
+.delete-btn:hover {
+  background: #1e293ba4; /* أحمر جميل عند التمرير */
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(255, 0, 0, 0.2);
+}
+
+/* 💰 الإجمالي */
+.order-total {
+  border-top: 1px solid #eee;
+  margin-top: 15px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.order-total span {
+  color: #777;
+}
+
+/* 📱 تجاوب */
+@media (max-width: 768px) {
+  .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-item img {
+    width: 100%;
+    max-width: 120px;
+    margin-bottom: 5px;
+  }
+
+  .order-details {
+    margin-left: 0;
+  }
+
+  .delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

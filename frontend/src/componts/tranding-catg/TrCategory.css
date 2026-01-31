@@ -1,0 +1,121 @@
+.TrCatagory{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 20px;
+    background-color: #e5e7eb;
+
+
+}
+.TrCatagory .h2p{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.TrCatagory .h2p h2{
+    font-size:2.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 20px;
+}
+.TrCatagory .h2p p{
+    color: #666;
+    margin-bottom: 20px;
+}
+.detials{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 30px 0;
+}
+.cart{
+    width: 300px;
+    height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 20px 20px;
+    background-color: #fff;
+    border: 1px solid #0000002c;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.cart:hover{
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cart .imgyy{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border-radius: 9px;
+}
+.cart .imgyy:hover img{
+    transform: scale(1.05);
+}
+.cart .imgyy img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    transition: 0.3s ease;
+}
+.ditalsh2{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    z-index: 2;
+
+}
+.ditalsh2 .opc{
+    font-size: 36px;
+}
+
+.ditalsh2 b{
+    font-size: 18px;
+}
+.ditalsh2 span{
+    font-size: 14px;
+}
+.ditalsh2 svg{
+    font-size: 24px;
+}
+.ovarly{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.45;
+    z-index: 1;
+}
+.ovarly.fashon{
+    background: linear-gradient(45deg, #0e0c0c 0%, #131110 99%, #000000 100%);
+}
+.ovarly.elctronic{
+    background: linear-gradient(45deg, #2563eb  0%, #0891b2  100%);
+}
+.ovarly.lifestyle{
+    background: linear-gradient(45deg, #334155  0%, #4b5563  100%);
+}
+.ovarly.grooming{
+    background: linear-gradient(45deg, #ea580c  0%, #d97706  100%);
+}
+
+
+@media screen and (max-width:640px) {
+.detials{
+    justify-content: center;
+}
+
+}

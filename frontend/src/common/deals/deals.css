@@ -1,0 +1,124 @@
+.deals-container {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.deals-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.deals-hero-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.deals-hero-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.deals-hero-text p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.shop-now-btn {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.shop-now-btn:hover {
+  transform: scale(1.05);
+}
+
+.deals-hero-img {
+  width: 480px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Cards */
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.deal-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-8px);
+}
+
+.deal-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.deal-card h3 {
+  margin: 15px 0 8px;
+  color: #333;
+}
+
+.deal-card p {
+  color: #666;
+  font-size: 0.95rem;
+  padding: 0 15px;
+  line-height: 1.5;
+}
+
+.deal-btn {
+  margin-top: 10px;
+  background: #ff416c;
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.deal-btn:hover {
+  background: #ff2b5c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .deals-hero {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .deals-hero-img {
+    width: 100%;
+    height: 260px;
+  }
+}

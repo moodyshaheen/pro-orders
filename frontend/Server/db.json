@@ -1,0 +1,115 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "image": "https://public.readdy.ai/ai/img_res/c6547a77d640b038941e007a361817fb.jpg",
+      "category": "fashion",
+      "price": 1500,
+      "title": "Athletic Running Shoes",
+      "discount": 5,
+      "stock": 10,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 2,
+      "image": "https://public.readdy.ai/ai/img_res/370d28cdfa34ba1c21fa7cc04c651238.jpg",
+      "category": "fashion",
+      "price": 900,
+      "title": "Designer Leather Handbag",
+      "discount": 30,
+      "stock": 52,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 3,
+      "image": "https://public.readdy.ai/ai/img_res/a948cff9f836c5dbbfd85c5a3c1fde68.jpg",
+      "category": "fashion",
+      "price": 1200,
+      "title": "Casual Cotton T-Shirt",
+      "discount": 8,
+      "stock": 3,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 4,
+      "image": "https://public.readdy.ai/ai/img_res/d3c57bbec2464ece36e9070734714d5f.jpg",
+      "category": "Electronics",
+      "price": 300,
+      "title": "Premium Wireless Headphones",
+      "discount": 20,
+      "stock": 15,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 5,
+      "image": "https://public.readdy.ai/ai/img_res/35d3f31c3c1dfc04edaa27a95fb9abb8.jpg",
+      "category": "Electronics",
+      "price": 300,
+      "title": "Smart Fitness Watch",
+      "discount": 3,
+      "stock": 2,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 6,
+      "image": "https://public.readdy.ai/ai/img_res/d527ad3ee94dd3ac0cd2cdbb43054192.jpg",
+      "category": "Electronics",
+      "price": 300,
+      "title": "Professional Camera Lens",
+      "discount": 9,
+      "stock": 22,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 7,
+      "image": "https://public.readdy.ai/ai/img_res/6e0a41ba6e79108653e20742d9ca932d.jpg",
+      "category": "Jewelry",
+      "price": 1600,
+      "title": "Diamond Earrings Set",
+      "discount": 16,
+      "stock": 31,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    },
+    {
+      "id": 8,
+      "image": "https://public.readdy.ai/ai/img_res/e3466006fd1269c1e1ac0d0449101ee6.jpg",
+      "category": "Jewelry",
+      "price": 1600,
+      "title": "Gold Statement Necklace",
+      "discount": 3,
+      "stock": 40,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti."
+    }
+  ],
+  "orders": [
+    {
+      "userId": "4k0sM1CPtBdfJdqO0wyOa6s2GbB2",
+      "items": [
+        {
+          "id": 1,
+          "image": "https://public.readdy.ai/ai/img_res/c6547a77d640b038941e007a361817fb.jpg",
+          "category": "fashion",
+          "price": 1500,
+          "title": "Athletic Running Shoes",
+          "discount": 5,
+          "stock": 10,
+          "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti.",
+          "amount": 2
+        },
+        {
+          "id": 3,
+          "image": "https://public.readdy.ai/ai/img_res/a948cff9f836c5dbbfd85c5a3c1fde68.jpg",
+          "category": "fashion",
+          "price": 1200,
+          "title": "Casual Cotton T-Shirt",
+          "discount": 8,
+          "stock": 3,
+          "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia asperiores facilis animi nobis, et minus odio doloribus necessitatibus unde atque harum reiciendis ut explicabo accusamus quasi laudantium pariatur veniam? Corrupti.",
+          "amount": 3
+        }
+      ],
+      "total": 6162,
+      "id": 1
+    }
+  ]
+}
