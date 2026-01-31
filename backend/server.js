@@ -22,8 +22,11 @@ app.use(cors())
 //db connection
 connectDb()
 
-// Seed database with sample data
-seedDatabase()
+// Seed database with sample data (only if DB is connected)
+setTimeout(() => {
+    // Give DB time to connect before seeding
+    seedDatabase()
+}, 2000)
 
 // api endpoints
 app.use("/api/product", proRouter)

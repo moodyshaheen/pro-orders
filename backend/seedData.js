@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 // Sample user data
 const sampleUser = {
   firstName: "Admin",
-  lastName: "User", 
+  lastName: "User",
   email: "admin@modernstore.com",
   password: "admin123456"
 };
@@ -25,7 +25,7 @@ const sampleProducts = [
   },
   {
     name: "Electronic Device",
-    category: "Electronics", 
+    category: "Electronics",
     price: 599,
     still: 8,
     rating: 4.9,
@@ -42,7 +42,7 @@ const sampleProducts = [
     rating: 4.5,
     discount: 5,
     featured: false,
-    image: "homer.jpg", 
+    image: "homer.jpg",
     description: "Beautiful home decoration piece"
   },
   {
@@ -84,14 +84,20 @@ export const seedDatabase = async () => {
   try {
     console.log("🌱 Starting database seeding...");
 
+    // Check if MongoDB is connected
+    if (!proModel.db || proModel.db.readyState !== 1) {
+      console.log("⚠️ Database not connected, skipping seeding");
+      return;
+    }
+
     // Check if admin user already exists
     const existingUser = await userModel.findOne({ email: sampleUser.email });
-    
+
     if (!existingUser) {
       // Create admin user
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(sampleUser.password, salt);
-      
+
       const adminUser = new userModel({
         firstName: sampleUser.firstName,
         lastName: sampleUser.lastName,
@@ -99,7 +105,7 @@ export const seedDatabase = async () => {
         password: hashedPassword,
         passwordConfirm: hashedPassword
       });
-      
+
       await adminUser.save();
       console.log("✅ Admin user created: admin@modernstore.com / admin123456");
     } else {
@@ -108,7 +114,7 @@ export const seedDatabase = async () => {
 
     // Check if products already exist
     const existingProducts = await proModel.find();
-    
+
     if (existingProducts.length === 0) {
       // Add sample products
       for (const product of sampleProducts) {
@@ -122,8 +128,9 @@ export const seedDatabase = async () => {
     }
 
     console.log("🎉 Database seeding completed!");
-    
+
   } catch (error) {
     console.error("❌ Error seeding database:", error);
+    console.log("⚠️ Continuing without seeding...");
   }
 };
