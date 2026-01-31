@@ -58,15 +58,19 @@ A complete e-commerce solution with React frontend, Node.js backend, and admin p
 ## 🔧 Environment Variables
 
 ### Backend (.env)
+Copy `backend/.env.example` to `backend/.env` and fill in your values:
 ```
-JWT_SECRET=your_jwt_secret
+JWT_SECRET=your_jwt_secret_here
 MONGODB_URI=your_mongodb_connection_string
 ```
 
 ### Frontend & Admin (.env)
+Copy `.env.example` to `.env` in both frontend and admin folders:
 ```
 VITE_API_URL=https://your-backend-url.vercel.app
 ```
+
+**⚠️ Important**: Never commit `.env` files to Git. They contain sensitive information.
 
 ## 📦 Features
 
