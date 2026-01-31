@@ -1,4 +1,4 @@
-import "./home.css" 
+import "./Home.css" 
 import Header from '../../componts/header/Header'
 import TrCatagory from '../../componts/tranding-catg/TrCatagory'
 import Categories from "../../componts/category/Category"
