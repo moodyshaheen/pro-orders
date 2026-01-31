@@ -10,6 +10,7 @@ const Products = () => {
   console.log("🔗 Admin Panel API URL:", url);
   console.log("🌍 Environment:", import.meta.env.MODE);
   console.log("📝 VITE_API_URL:", import.meta.env.VITE_API_URL);
+  console.log("🛠️ Attempting to connect to:", `${url}/api/product/list`);
   
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -81,6 +82,9 @@ const Products = () => {
     event.preventDefault();
 
     try {
+      console.log("🚀 Submitting product data...");
+      console.log("📍 Endpoint:", editMode ? `${url}/api/product/update/${formData._id}` : `${url}/api/product/add`);
+      
       const fd = new FormData();
       fd.append("name", formData.name);
       fd.append("category", formData.category);
@@ -98,18 +102,38 @@ const Products = () => {
         ? `${url}/api/product/update/${formData._id}`
         : `${url}/api/product/add`;
 
+      console.log("📤 Sending request to:", endpoint);
+
       const response = await axios.post(endpoint, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      console.log("📥 Response received:", response.data);
 
       if (response.data.success) {
         alert(editMode ? "Product Updated!" : "Product Added!");
         fetchProducts();
         setShowModal(false);
+      } else {
+        console.error("❌ Backend returned error:", response.data.message);
+        alert(`Error: ${response.data.message || "Unknown error"}`);
       }
     } catch (error) {
-      console.error(error);
-      alert("⚠ Error saving product");
+      console.error("❌ Request failed:", error);
+      console.error("📊 Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
+      
+      if (error.response?.data?.message) {
+        alert(`⚠ Error: ${error.response.data.message}`);
+      } else if (error.message.includes('Network Error')) {
+        alert("⚠ Network Error: Cannot connect to server. Check your internet connection.");
+      } else {
+        alert("⚠ Error saving product. Check console for details.");
+      }
     }
   };
 
