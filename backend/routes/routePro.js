@@ -13,8 +13,12 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, // 5MB limit
   },
   fileFilter: (req, file, cb) => {
+    console.log("📷 File filter - File:", file);
     // Accept only image files
-    if (file.mimetype.startsWith('image/')) {
+    if (file && file.mimetype && file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else if (!file) {
+      // No file is also acceptable
       cb(null, true);
     } else {
       cb(new Error('Only image files are allowed!'), false);
@@ -23,7 +27,15 @@ const upload = multer({
 });
 
 // 🧩 المسارات
-proRouter.post('/add', upload.single('image'), addPro)
+proRouter.post('/add', (req, res, next) => {
+  console.log("📝 POST /add - Headers:", req.headers);
+  console.log("📝 POST /add - Content-Type:", req.get('Content-Type'));
+  next();
+}, upload.single('image'), (req, res, next) => {
+  console.log("📝 After multer - Body:", req.body);
+  console.log("📝 After multer - File:", req.file ? "Present" : "Not present");
+  next();
+}, addPro)
 proRouter.get('/list', listPro)
 proRouter.post('/remove', removePro)
 proRouter.get('/byIds', getProductsByIds);

@@ -14,6 +14,16 @@ export const addPro = async (req, res) => {
   try {
     console.log("📝 Adding product with data:", req.body);
     console.log("📷 Image file:", req.file ? "Present" : "Not provided");
+    console.log("📋 Request headers:", req.headers);
+
+    // Validate required fields
+    if (!req.body || !req.body.name) {
+      console.error("❌ Missing required field: name");
+      return res.status(400).json({
+        success: false,
+        message: "Missing required field: name"
+      });
+    }
 
     let imageData = '';
 
@@ -28,9 +38,9 @@ export const addPro = async (req, res) => {
 
     const productData = {
       name: req.body.name,
-      price: Number(req.body.price),
+      price: Number(req.body.price) || 0,
       image: imageData, // Store base64 image or empty string
-      category: req.body.category,
+      category: req.body.category || 'General',
       rating: Number(req.body.rating) || 0,
       still: Number(req.body.still) || 0,
       discount: Number(req.body.discount || 0),
