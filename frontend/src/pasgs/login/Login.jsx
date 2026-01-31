@@ -7,7 +7,7 @@ import { displayContext } from "../../context/DisplayContexet";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken, setUserData } = useContext(displayContext);
+  const { setToken, setUserData, url } = useContext(displayContext);
 
   const [data, setData] = useState({ email: "", password: "" });
 

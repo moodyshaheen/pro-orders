@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
-  const { setToken, setUserData } = useContext(displayContext);
+  const { setToken, setUserData, url } = useContext(displayContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
