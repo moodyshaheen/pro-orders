@@ -16,7 +16,12 @@ export const DisplayContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL || "https://pro-orders-46b5.vercel.app";
+  
+  // Debug logging
+  console.log("🔗 Frontend API URL:", url);
+  console.log("🌍 Environment:", import.meta.env.MODE);
+  console.log("📝 VITE_API_URL:", import.meta.env.VITE_API_URL);
   
   // Load token and userData from localStorage on mount
   const [token, setToken] = useState(() => {
