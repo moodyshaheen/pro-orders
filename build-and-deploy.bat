@@ -45,6 +45,6 @@ echo.
 echo ✅ Deployment completed successfully!
 echo 🌐 Frontend: https://modernstore-v1.surge.sh
 echo 🔧 Admin: https://modernstore-admin-v1.surge.sh
-echo 🔗 Backend: https://pro-orders-46b5.vercel.app
+echo 🔗 Backend: https://pro-ordersm.vercel.app
 
 pause
