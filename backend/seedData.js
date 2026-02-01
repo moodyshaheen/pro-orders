@@ -20,7 +20,7 @@ const sampleProducts = [
     rating: 4.8,
     discount: 10,
     featured: true,
-    image: "fashon.jpg",
+    image: "",
     description: "High-quality fashion jacket for modern style"
   },
   {
@@ -31,7 +31,7 @@ const sampleProducts = [
     rating: 4.9,
     discount: 15,
     featured: true,
-    image: "elctr.jpg",
+    image: "d3c57bbec2464ece36e9070734714d5f.jpg",
     description: "Latest electronic device with advanced features"
   },
   {
