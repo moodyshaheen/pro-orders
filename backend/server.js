@@ -37,7 +37,12 @@ app.use("/api/order", orderRoute)
 
 
 app.get("/", (req, res) => {
-    res.send("API Working")
+    res.json({
+        success: true,
+        message: "ModernStore API Working - Updated Version",
+        version: "2.0.0",
+        timestamp: new Date().toISOString()
+    });
 })
 
 
