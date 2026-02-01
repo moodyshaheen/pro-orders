@@ -64,7 +64,23 @@ const Products = () => {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    // Reset form data when closing modal
+    setFormData({
+      name: "",
+      category: "",
+      price: "",
+      still: "",
+      rating: "",
+      discount: "",
+      featured: false,
+      image: null,
+      imageFile: null,
+      _id: null,
+    });
+    setEditMode(false);
+    setShowModal(false);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -83,19 +99,38 @@ const Products = () => {
 
     try {
       console.log("🚀 Submitting product data...");
+      console.log("📋 Current form data:", formData);
+      
+      // Validate required fields
+      if (!formData.name || !formData.name.trim()) {
+        alert("⚠ Product name is required!");
+        return;
+      }
+      
+      if (!formData.category || !formData.category.trim()) {
+        alert("⚠ Product category is required!");
+        return;
+      }
+      
+      if (!formData.price || formData.price <= 0) {
+        alert("⚠ Product price must be greater than 0!");
+        return;
+      }
+      
       console.log("📍 Endpoint:", editMode ? `${url}/api/product/update/${formData._id}` : `${url}/api/product/add`);
       
       const fd = new FormData();
-      fd.append("name", formData.name);
-      fd.append("category", formData.category);
-      fd.append("price", formData.price);
-      fd.append("still", formData.still);
-      fd.append("rating", formData.rating);
-      fd.append("discount", formData.discount);
-      fd.append("featured", formData.featured);
+      fd.append("name", formData.name.trim());
+      fd.append("category", formData.category.trim());
+      fd.append("price", formData.price.toString());
+      fd.append("still", formData.still.toString() || "0");
+      fd.append("rating", formData.rating.toString() || "0");
+      fd.append("discount", formData.discount.toString() || "0");
+      fd.append("featured", formData.featured.toString());
 
       if (formData.imageFile) {
         fd.append("image", formData.imageFile);
+        console.log("📷 Image file attached:", formData.imageFile.name);
       }
 
       const endpoint = editMode
@@ -112,7 +147,28 @@ const Products = () => {
 
       if (response.data.success) {
         alert(editMode ? "Product Updated!" : "Product Added!");
+        
+        // Reset form data
+        setFormData({
+          name: "",
+          category: "",
+          price: "",
+          still: "",
+          rating: "",
+          discount: "",
+          featured: false,
+          image: null,
+          imageFile: null,
+          _id: null,
+        });
+        
+        // Reset edit mode
+        setEditMode(false);
+        
+        // Refresh products list
         fetchProducts();
+        
+        // Close modal
         setShowModal(false);
       } else {
         console.error("❌ Backend returned error:", response.data.message);
