@@ -1,32 +1,90 @@
-import userModel from "../models/userModel.js"; // importing user model
-import jwt from "jsonwebtoken"; // JWT for token
-import bcrypt from "bcryptjs"; // bcrypt for password hashing
-import validator from "validator"; // validator for email validation
+import userModel from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import validator from "validator";
+
+// Temporary in-memory storage when DB is not connected
+let tempUsers = [];
+let tempUserIdCounter = 1;
+
+// Check if MongoDB is connected
+const isDbConnected = () => {
+  return userModel.db && userModel.db.readyState === 1;
+};
 
 // Helper function: create JWT token
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" }); // optional: token expires in 7 days
+  return jwt.sign({ id }, process.env.JWT_SECRET || "fallback_secret", { expiresIn: "7d" });
 };
 
 // Login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+
   try {
-    const user = await userModel.findOne({ email });
+    console.log("🔐 Login attempt for email:", email);
+
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required"
+      });
+    }
+
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email format"
+      });
+    }
+
+    let user;
+
+    if (isDbConnected()) {
+      // Use MongoDB
+      user = await userModel.findOne({ email });
+    } else {
+      // Use temporary storage
+      user = tempUsers.find(u => u.email === email);
+      console.log("🔍 Searching in temporary storage, found:", user ? "Yes" : "No");
+    }
+
     if (!user) {
-      return res.status(400).json({ success: false, message: "Invalid Email or Password" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password"
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ success: false, message: "Invalid Email or Password" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password"
+      });
     }
 
     const token = createToken(user._id);
-    res.status(200).json({ success: true, token });
+    console.log("✅ Login successful for:", email);
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      },
+      message: "Login successful!"
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.error("❌ Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during login"
+    });
   }
 };
 
@@ -35,116 +93,294 @@ const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
   try {
-    // Check required fields
+    console.log("📝 Registration attempt for:", email);
+
+    // Validate required fields
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required"
+      });
     }
 
-    if (await userModel.findOne({ email })) {
-      return res.status(400).json({ success: false, message: "User with this email already exists" });
-    }
-
+    // Validate email format
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Invalid Email" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email format"
+      });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long"
+      });
     }
 
+    // Check password confirmation if provided
+    if (passwordConfirm && password !== passwordConfirm) {
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match"
+      });
+    }
+
+    // Check if user already exists
+    let existingUser;
+    if (isDbConnected()) {
+      existingUser = await userModel.findOne({ email });
+    } else {
+      existingUser = tempUsers.find(u => u.email === email);
+    }
+
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists"
+      });
+    }
+
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new userModel({
-      firstName,
-      lastName,
-      email,
+    const userData = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
-    });
+      createdAt: new Date()
+    };
 
-    const user = await newUser.save();
+    let user;
+
+    if (isDbConnected()) {
+      // Use MongoDB
+      const newUser = new userModel(userData);
+      user = await newUser.save();
+      console.log("✅ User saved to MongoDB");
+    } else {
+      // Use temporary storage
+      user = {
+        _id: tempUserIdCounter++,
+        ...userData
+      };
+      tempUsers.push(user);
+      console.log("✅ User saved to temporary storage");
+    }
+
     const token = createToken(user._id);
 
-    res.status(201).json({ success: true, token });
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      },
+      message: "Registration successful!"
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.error("❌ Registration error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during registration"
+    });
   }
 };
 
 // Get logged-in user
 const getMe = async (req, res) => {
-  if (!req.user) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    if (!req.user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: req.user._id,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        createdAt: req.user.createdAt
+      }
+    });
+  } catch (error) {
+    console.error("❌ Get user error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
-  res.status(200).json(req.user);
 };
 
 // Get all users (Admin only)
 const getAllUsers = async (req, res) => {
   try {
-    const users = await userModel.find().select("-password").sort({ createdAt: -1 });
-    res.status(200).json({ success: true, data: users });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
-  }
-};
+    let users;
 
-// Get user orders count
-const getUserOrdersCount = async (userId) => {
-  try {
-    const orderModel = (await import("../models/orderModel.js")).default;
-    const count = await orderModel.countDocuments({ userId });
-    return count;
+    if (isDbConnected()) {
+      users = await userModel.find().select("-password").sort({ createdAt: -1 });
+    } else {
+      users = tempUsers.map(user => {
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+      }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    res.status(200).json({
+      success: true,
+      data: users,
+      count: users.length
+    });
   } catch (error) {
-    return 0;
+    console.error("❌ Get all users error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
 
 // Update user profile
 const updateUser = async (req, res) => {
   try {
-    const { userId } = req.body; // comes from middleware
+    const { userId } = req.body;
     const { firstName, lastName } = req.body;
 
     if (!firstName || !lastName) {
-      return res.status(400).json({ success: false, message: "First name and last name are required" });
+      return res.status(400).json({
+        success: false,
+        message: "First name and last name are required"
+      });
     }
 
-    const user = await userModel.findByIdAndUpdate(
-      userId,
-      { firstName, lastName },
-      { new: true, runValidators: true }
-    ).select("-password");
+    let user;
+
+    if (isDbConnected()) {
+      user = await userModel.findByIdAndUpdate(
+        userId,
+        {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          updatedAt: new Date()
+        },
+        { new: true, runValidators: true }
+      ).select("-password");
+    } else {
+      const userIndex = tempUsers.findIndex(u => u._id == userId);
+      if (userIndex === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+
+      tempUsers[userIndex] = {
+        ...tempUsers[userIndex],
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        updatedAt: new Date()
+      };
+
+      const { password, ...userWithoutPassword } = tempUsers[userIndex];
+      user = userWithoutPassword;
+    }
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
     }
 
-    res.status(200).json({ success: true, user });
+    res.status(200).json({
+      success: true,
+      user,
+      message: "Profile updated successfully!"
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.error("❌ Update user error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
 
 // Delete user account
 const deleteUser = async (req, res) => {
   try {
-    const { userId } = req.body; // comes from middleware
+    const { userId } = req.body;
 
-    const user = await userModel.findByIdAndDelete(userId);
+    let user;
 
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+    if (isDbConnected()) {
+      user = await userModel.findByIdAndDelete(userId);
+    } else {
+      const userIndex = tempUsers.findIndex(u => u._id == userId);
+      if (userIndex === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+
+      user = tempUsers[userIndex];
+      tempUsers.splice(userIndex, 1);
     }
 
-    res.status(200).json({ success: true, message: "User account deleted successfully" });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User account deleted successfully"
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.error("❌ Delete user error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
 
-export { loginUser, registerUser, getMe, getAllUsers, getUserOrdersCount, updateUser, deleteUser };
+// Get user orders count
+const getUserOrdersCount = async (userId) => {
+  try {
+    if (isDbConnected()) {
+      const orderModel = (await import("../models/orderModel.js")).default;
+      const count = await orderModel.countDocuments({ userId });
+      return count;
+    } else {
+      // For temporary storage, return 0 for now
+      return 0;
+    }
+  } catch (error) {
+    console.error("❌ Get user orders count error:", error);
+    return 0;
+  }
+};
+
+export {
+  loginUser,
+  registerUser,
+  getMe,
+  getAllUsers,
+  getUserOrdersCount,
+  updateUser,
+  deleteUser
+};

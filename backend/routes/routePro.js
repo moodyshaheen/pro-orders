@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { addPro, listPro, removePro, getProductsByIds } from '../controllers/controlProduct.js'
+import { addPro, listPro, removePro, getProductsByIds, updatePro, getProductById } from '../controllers/controlProduct.js'
 
 const proRouter = express.Router()
 
@@ -36,8 +36,11 @@ proRouter.post('/add', (req, res, next) => {
   console.log("📝 After multer - File:", req.file ? "Present" : "Not present");
   next();
 }, addPro)
+
+proRouter.put('/update/:id', upload.single('image'), updatePro)
 proRouter.get('/list', listPro)
 proRouter.post('/remove', removePro)
-proRouter.get('/byIds', getProductsByIds);
+proRouter.get('/byIds', getProductsByIds)
+proRouter.get('/:id', getProductById)
 
 export default proRouter
