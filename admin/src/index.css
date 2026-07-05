@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply h-screen font-sans;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  a {
+    @apply no-underline text-inherit;
+  }
+  
+  li {
+    @apply list-none;
+  }
+  
+  button {
+    @apply cursor-pointer;
+  }
+  
+  input {
+    @apply outline-none border-none;
+  }
+  
+  textarea {
+    @apply resize-none;
+  }
+  
+  img {
+    @apply block max-w-full;
+  }
+}
+
+@layer components {
+  .h2p {
+    @apply flex flex-col items-center;
+  }
+  
+  .h2p h2 {
+    @apply text-4xl font-semibold text-gray-900 mb-5;
+  }
+  
+  .h2p p {
+    @apply text-gray-600 mb-5;
+  }
+}
