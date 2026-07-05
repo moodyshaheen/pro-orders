@@ -90,7 +90,8 @@ const loginUser = async (req, res) => {
 
 // Register user
 const registerUser = async (req, res) => {
-  const { firstName, lastName, email, password, passwordConfirm } = req.body;
+  const { firstName, lastName, email, password, passwordConfirm, confirmPassword } = req.body;
+  const passConfirm = passwordConfirm || confirmPassword;
 
   try {
     console.log("📝 Registration attempt for:", email);
@@ -120,7 +121,7 @@ const registerUser = async (req, res) => {
     }
 
     // Check password confirmation if provided
-    if (passwordConfirm && password !== passwordConfirm) {
+    if (passConfirm && password !== passConfirm) {
       return res.status(400).json({
         success: false,
         message: "Passwords do not match"
@@ -196,29 +197,40 @@ const registerUser = async (req, res) => {
 // Get logged-in user
 const getMe = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
+    const userId = req.body.userId;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Not authorized" });
+    }
+
+    let user;
+    if (isDbConnected()) {
+      user = await userModel.findById(userId).select("-password");
+    } else {
+      const tempUser = tempUsers.find(u => u._id == userId);
+      if (tempUser) {
+        const { password, ...userWithoutPassword } = tempUser;
+        user = userWithoutPassword;
+      }
+    }
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     res.status(200).json({
       success: true,
       user: {
-        id: req.user._id,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        email: req.user.email,
-        createdAt: req.user.createdAt
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        createdAt: user.createdAt
       }
     });
   } catch (error) {
     console.error("❌ Get user error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error"
-    });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

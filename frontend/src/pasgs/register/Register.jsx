@@ -74,7 +74,7 @@ function Register() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const userData = userRes.data;
+        const userData = userRes.data.user || userRes.data;
         setUserData(userData);
         localStorage.setItem("userData", JSON.stringify(userData));
 
