@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "./about.css";
-import img1 from "../../assets/imges/kjo.jpg";
-import img2 from "../../assets/imges/kldon.jpg";
-import img3 from "../../assets/imges/sdil.jpg";
+const img1 = "https://images.unsplash.com/photo-1522202176988-66273c2fd55f";
+const img2 = "https://images.unsplash.com/photo-1498050108023-c5249f4df085";
+const img3 = "https://images.unsplash.com/photo-1460925895917-afdab827c52f";
 
 function About() {
   return (

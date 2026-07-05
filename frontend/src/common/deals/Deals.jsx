@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import "./deals.css";
-import img1 from "../../assets/imges/elctr.jpg";
-import img2 from "../../assets/imges/homer.jpg";
-import img3 from "../../assets/imges/fashon.jpg";
+const img1 = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8";
+const img2 = "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+const img3 = "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c";
 
 function Deals() {
   return (
