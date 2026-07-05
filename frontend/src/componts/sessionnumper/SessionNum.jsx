@@ -1,6 +1,6 @@
 import React from 'react'
 import '../sessionnumper/sessionNum.css'
-import img from '../../assets/imges/669ea6ce02f71816dbbfd2336044eb6e.jpg'
+const img = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da";
 
 function SessionNum() {
     return (
