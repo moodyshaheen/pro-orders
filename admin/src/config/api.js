@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = import.meta.env.VITE_API_URL || "https://pro-orders-46b5.vercel.app";
+const API_URL = import.meta.env.VITE_API_URL || "https://pro-orders-u15h.vercel.app";
 
 // Remove trailing slash if exists
 export const baseURL = API_URL.replace(/\/$/, '');
