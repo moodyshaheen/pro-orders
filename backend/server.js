@@ -22,6 +22,7 @@ app.use(cors({
         'https://modernstore-v1.surge.sh',
         'https://modernstore-admin-v1.surge.sh',
         'https://pro-orders-6k2c.vercel.app',
+        'https://pro-orders-8k3w.vercel.app',
         'http://localhost:3000',
         'http://localhost:5173',
         'http://localhost:5174'
