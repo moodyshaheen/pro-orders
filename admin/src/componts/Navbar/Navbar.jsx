@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
 
-function Navbar() {
+function Navbar({ onLogout }) {
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userData");
-    window.location.href = "/";
+    if (onLogout) onLogout();
+    else { localStorage.removeItem("adminToken"); window.location.href = "/"; }
   };
 
   const handleProfile = () => {
