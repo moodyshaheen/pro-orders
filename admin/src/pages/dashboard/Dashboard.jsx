@@ -10,7 +10,7 @@ const Dashboard = () => {
     totalRevenue: 0,
   });
   const [loading, setLoading] = useState(true);
-  const url = import.meta.env.VITE_API_URL || "https://pro-orders-46b5.vercel.app";
+  const url = import.meta.env.VITE_API_URL || "https://pro-orders-u15h.vercel.app";
 
   useEffect(() => {
     fetchStats();
@@ -19,23 +19,28 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      
-      // Fetch products
-      const productsRes = await axios.get(`${url}/api/product/list`);
-      const totalProducts = productsRes.data.success ? productsRes.data.data?.length || 0 : 0;
+      const token = localStorage.getItem("adminToken");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      // Fetch orders (you'll need to create this endpoint)
-      // For now, we'll use a placeholder
-      const totalOrders = 0;
-      const totalUsers = 0;
-      const totalRevenue = 0;
+      const [productsRes, usersRes, ordersRes] = await Promise.allSettled([
+        axios.get(`${url}/api/product/list`),
+        axios.get(`${url}/api/user/all`, { headers }),
+        axios.post(`${url}/api/order/all`, {}, { headers }),
+      ]);
 
-      setStats({
-        totalProducts,
-        totalOrders,
-        totalUsers,
-        totalRevenue,
-      });
+      const totalProducts = productsRes.status === "fulfilled" && productsRes.value.data.success
+        ? productsRes.value.data.data?.length || 0 : 0;
+
+      const totalUsers = usersRes.status === "fulfilled" && usersRes.value.data.success
+        ? usersRes.value.data.data?.length || 0 : 0;
+
+      const orders = ordersRes.status === "fulfilled" && ordersRes.value.data.success
+        ? ordersRes.value.data.orders || [] : [];
+
+      const totalOrders = orders.length;
+      const totalRevenue = orders.reduce((sum, o) => sum + (o.totalPrice || o.amount || 0), 0);
+
+      setStats({ totalProducts, totalOrders, totalUsers, totalRevenue });
     } catch (error) {
       console.error('Error fetching stats:', error);
     } finally {
