@@ -73,13 +73,15 @@ app.get("/", (req, res) => {
 })
 
 // Health check endpoint
-app.get("/api/health", (req, res) => {
+app.get("/api/health", async (req, res) => {
+    const { default: mongoose } = await import('mongoose');
     res.json({
         success: true,
         status: "healthy",
+        dbState: mongoose.connection.readyState,
+        dbStateText: ["disconnected","connected","connecting","disconnecting"][mongoose.connection.readyState] || "unknown",
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        memory: process.memoryUsage(),
         version: "2.1.0"
     })
 })
