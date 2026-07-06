@@ -137,11 +137,9 @@ const Products = () => {
         ? `${url}/api/product/update/${formData._id}`
         : `${url}/api/product/add`;
 
-      console.log("📤 Sending request to:", endpoint);
-
-      const response = await axios.post(endpoint, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = editMode
+        ? await axios.put(endpoint, fd, { headers: { "Content-Type": "multipart/form-data" } })
+        : await axios.post(endpoint, fd, { headers: { "Content-Type": "multipart/form-data" } });
 
       console.log("📥 Response received:", response.data);
 
@@ -270,7 +268,7 @@ const Products = () => {
                   <td className="p-3 border-b border-gray-200">
                     <img
                       src={
-                        p.image?.startsWith("http")
+                        p.image?.startsWith("data:") || p.image?.startsWith("http")
                           ? p.image
                           : `${url}/images/${p.image}`
                       }

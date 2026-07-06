@@ -13,8 +13,8 @@ const isDbConnected = () => {
 };
 
 // Helper function: create JWT token
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || "fallback_secret", { expiresIn: "7d" });
+const createToken = (id, userData = {}) => {
+  return jwt.sign({ id, ...userData }, process.env.JWT_SECRET || "fallback_secret", { expiresIn: "7d" });
 };
 
 // Login user
@@ -172,7 +172,11 @@ const registerUser = async (req, res) => {
       console.log("✅ User saved to temporary storage");
     }
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email
+    });
 
     res.status(201).json({
       success: true,
@@ -197,47 +201,51 @@ const registerUser = async (req, res) => {
 // Get logged-in user
 const getMe = async (req, res) => {
   try {
-    // Support both protect middleware (req.user) and authMidelWhere (req.body.userId)
-    const user = req.user;
-    const userId = req.body.userId;
-
-    if (user) {
+    // If protect middleware found user in DB
+    if (req.user && req.user.firstName) {
       return res.status(200).json({
         success: true,
         user: {
-          _id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          createdAt: user.createdAt
+          _id: req.user._id,
+          firstName: req.user.firstName,
+          lastName: req.user.lastName,
+          email: req.user.email,
+          createdAt: req.user.createdAt
         }
       });
     }
 
-    if (userId) {
-      let foundUser;
+    // DB not connected - decode token directly to get basic info
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret");
+      
+      // Try DB lookup
       if (isDbConnected()) {
-        foundUser = await userModel.findById(userId).select("-password");
-      } else {
-        const tempUser = tempUsers.find(u => u._id == userId);
-        if (tempUser) {
-          const { password, ...rest } = tempUser;
-          foundUser = rest;
+        const user = await userModel.findById(decoded.id).select("-password");
+        if (user) {
+          return res.status(200).json({
+            success: true,
+            user: {
+              _id: user._id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              createdAt: user.createdAt
+            }
+          });
         }
       }
 
-      if (!foundUser) {
-        return res.status(404).json({ success: false, message: "User not found" });
-      }
-
+      // Fallback: return info embedded in token
       return res.status(200).json({
         success: true,
-        user: {
-          _id: foundUser._id,
-          firstName: foundUser.firstName,
-          lastName: foundUser.lastName,
-          email: foundUser.email,
-          createdAt: foundUser.createdAt
+        user: { 
+          _id: decoded.id, 
+          firstName: decoded.firstName || "User", 
+          lastName: decoded.lastName || "", 
+          email: decoded.email || ""
         }
       });
     }
