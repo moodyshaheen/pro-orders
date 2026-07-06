@@ -197,37 +197,52 @@ const registerUser = async (req, res) => {
 // Get logged-in user
 const getMe = async (req, res) => {
   try {
+    // Support both protect middleware (req.user) and authMidelWhere (req.body.userId)
+    const user = req.user;
     const userId = req.body.userId;
 
-    if (!userId) {
-      return res.status(401).json({ success: false, message: "Not authorized" });
+    if (user) {
+      return res.status(200).json({
+        success: true,
+        user: {
+          _id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          createdAt: user.createdAt
+        }
+      });
     }
 
-    let user;
-    if (isDbConnected()) {
-      user = await userModel.findById(userId).select("-password");
-    } else {
-      const tempUser = tempUsers.find(u => u._id == userId);
-      if (tempUser) {
-        const { password, ...userWithoutPassword } = tempUser;
-        user = userWithoutPassword;
+    if (userId) {
+      let foundUser;
+      if (isDbConnected()) {
+        foundUser = await userModel.findById(userId).select("-password");
+      } else {
+        const tempUser = tempUsers.find(u => u._id == userId);
+        if (tempUser) {
+          const { password, ...rest } = tempUser;
+          foundUser = rest;
+        }
       }
-    }
 
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    res.status(200).json({
-      success: true,
-      user: {
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        createdAt: user.createdAt
+      if (!foundUser) {
+        return res.status(404).json({ success: false, message: "User not found" });
       }
-    });
+
+      return res.status(200).json({
+        success: true,
+        user: {
+          _id: foundUser._id,
+          firstName: foundUser.firstName,
+          lastName: foundUser.lastName,
+          email: foundUser.email,
+          createdAt: foundUser.createdAt
+        }
+      });
+    }
+
+    return res.status(401).json({ success: false, message: "Not authorized" });
   } catch (error) {
     console.error("❌ Get user error:", error);
     res.status(500).json({ success: false, message: "Server error" });

@@ -112,10 +112,10 @@ function Product() {
           productFullInfo.map((prod) => (
             <div className="productCard" key={prod._id}>
               <div className="productImageWrapper">
-                <img src={url + "/images/" + prod.image} alt={prod.title} />
+                <img src={prod.image && prod.image.startsWith('data:') ? prod.image : url + "/images/" + prod.image} alt={prod.name || prod.title} />
               </div>
               <div className="productInfo">
-                <h3 className="productTitle">{prod.title}</h3>
+                <h3 className="productTitle">{prod.name || prod.title}</h3>
                 <div className="productPrices">
                   <span className="productPrice">${prod.price}</span>
                   {prod.oldPrice && (
