@@ -1,4 +1,25 @@
 import proModel from "../models/proModel.js";
+import { v2 as cloudinary } from "cloudinary";
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const uploadToCloudinary = (buffer, mimetype) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "products", resource_type: "image" },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
+  });
+};
 
 // Temporary in-memory storage when DB is not connected
 let tempProducts = [];
@@ -29,14 +50,16 @@ export const addPro = async (req, res) => {
     // Handle image upload
     if (req.file) {
       try {
-        // Convert image to base64 for storage
-        const imageBase64 = req.file.buffer.toString('base64');
-        const imageMimeType = req.file.mimetype;
-        imageData = `data:${imageMimeType};base64,${imageBase64}`;
-        console.log("📷 Image converted to base64, size:", imageBase64.length);
+        if (process.env.CLOUDINARY_CLOUD_NAME) {
+          imageData = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
+          console.log("📷 Image uploaded to Cloudinary:", imageData);
+        } else {
+          const imageBase64 = req.file.buffer.toString('base64');
+          imageData = `data:${req.file.mimetype};base64,${imageBase64}`;
+          console.log("📷 Image stored as base64");
+        }
       } catch (imageError) {
         console.error("❌ Error processing image:", imageError);
-        // Continue without image
       }
     }
 
@@ -100,10 +123,13 @@ export const updatePro = async (req, res) => {
     // Handle image upload
     if (req.file) {
       try {
-        const imageBase64 = req.file.buffer.toString('base64');
-        const imageMimeType = req.file.mimetype;
-        imageData = `data:${imageMimeType};base64,${imageBase64}`;
-        console.log("📷 New image converted to base64");
+        if (process.env.CLOUDINARY_CLOUD_NAME) {
+          imageData = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
+        } else {
+          const imageBase64 = req.file.buffer.toString('base64');
+          imageData = `data:${req.file.mimetype};base64,${imageBase64}`;
+        }
+        console.log("📷 New image processed");
       } catch (imageError) {
         console.error("❌ Error processing image:", imageError);
       }

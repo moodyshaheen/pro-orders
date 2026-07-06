@@ -112,7 +112,16 @@ function Product() {
           productFullInfo.map((prod) => (
             <div className="productCard" key={prod._id}>
               <div className="productImageWrapper">
-                <img src={prod.image && prod.image.startsWith('data:') ? prod.image : url + "/images/" + prod.image} alt={prod.name || prod.title} />
+                <img 
+                  src={
+                    prod.image
+                      ? prod.image.startsWith('data:') || prod.image.startsWith('http')
+                        ? prod.image
+                        : url + "/images/" + prod.image
+                      : "https://via.placeholder.com/150"
+                  } 
+                  alt={prod.name || prod.title} 
+                />
               </div>
               <div className="productInfo">
                 <h3 className="productTitle">{prod.name || prod.title}</h3>
