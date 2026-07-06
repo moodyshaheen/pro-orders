@@ -73,8 +73,13 @@ function Navbar() {
         return;
       }
       try {
-        const res = await axios.get(`http://localhost:3000/products?q=${searchTerm}`);
-        setSearchResults(res.data);
+        const { displayContext: ctx } = await import('../../context/DisplayContexet');
+        const res = await axios.get(`https://pro-orders-u15h.vercel.app/api/product/list`);
+        const all = res.data.data || [];
+        const filtered = all.filter(p =>
+          (p.name || p.title || "").toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setSearchResults(filtered);
       } catch (error) {
         console.error("Search error:", error);
       }
@@ -169,9 +174,12 @@ function Navbar() {
             {showResults && searchResults.length > 0 && (
               <div className="search-dropdown">
                 {searchResults.slice(0, 5).map((item) => (
-                  <div key={item.id} className="search-item" onClick={() => { navigate(`/${item.category}`); setSearchTerm(""); setShowResults(false); }}>
-                    <img src={item.image} alt={item.title} />
-                    <span>{item.title}</span>
+                  <div key={item._id} className="search-item" onClick={() => { navigate(`/${item.category}`); setSearchTerm(""); setShowResults(false); }}>
+                    <img
+                      src={item.image && (item.image.startsWith('data:') || item.image.startsWith('http')) ? item.image : `https://placehold.co/40x40`}
+                      alt={item.name || item.title}
+                    />
+                    <span>{item.name || item.title}</span>
                   </div>
                 ))}
               </div>

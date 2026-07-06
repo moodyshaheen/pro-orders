@@ -97,11 +97,21 @@ useEffect(() => {
             <div className="continer" key={index}>
 
               <div className="imgejds">
-                <img src={url + '/images/' +val.image} alt="" />
+                <img 
+                  src={
+                    val.image && (val.image.startsWith('data:') || val.image.startsWith('http'))
+                      ? val.image
+                      : val.image
+                        ? url + "/images/" + val.image
+                        : "https://placehold.co/300x300?text=No+Image"
+                  }
+                  onError={(e) => { e.target.src = "https://placehold.co/300x300?text=No+Image" }}
+                  alt={val.name || val.title}
+                />
               </div>
 
               <p className="fksdf">
-                {val.title}
+                {val.name || val.title}
               </p>
 
               <div className="priceto">
