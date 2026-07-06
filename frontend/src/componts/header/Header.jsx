@@ -3,7 +3,7 @@ import "./Header.css"
 import { FaShoppingCart } from "react-icons/fa";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import { RiPlayCircleFill } from "react-icons/ri";
-const img = "https://images.unsplash.com/photo-1441986300917-64674bd600d8";
+import img from "../../assets/imges/3c5b5791ceeb7090fca7f8b0ff33bdbb.jpg";
 
 function Header() {
   return (

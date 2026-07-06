@@ -2,10 +2,10 @@ import React from 'react'
 import { PiShirtFoldedLight  } from "react-icons/pi";
 import { LuSmartphone } from "react-icons/lu";
 import { RiHomeHeartLine,RiScissorsFill } from "react-icons/ri"; 
-const img1 = "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c";
-const img2 = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8";
-const img3 = "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
-const img4 = "https://images.unsplash.com/photo-1526045612212-70caf35c14df";
+import img1 from "../../assets/imges/b46ccc6535d54c976cebc2e72ea6f643.jpg";
+import img2 from  "../../assets/imges/9ec65627ebec9927cedb9cf282f76254.jpg";
+import img3 from "../../assets/imges/01d7b11f5b3fc75e2a245383d7041b7a.jpg";
+import img4 from "../../assets/imges/03bb08babfa360b967dcb34ae2ea9de5.jpg";
 import "./TrCategory.css"
 
 function TrCatagory() {
