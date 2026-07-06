@@ -157,11 +157,21 @@ function Categories() {
           productFullInfo.map((prod) => (
             <div className="product-card" key={prod._id}>
               <div className="product-img">
-                <img src={url + "/images/" + prod.image} alt={prod.title} />
+                <img 
+                  src={
+                    prod.image && (prod.image.startsWith('data:') || prod.image.startsWith('http'))
+                      ? prod.image
+                      : prod.image
+                        ? url + "/images/" + prod.image
+                        : "https://placehold.co/300x300?text=No+Image"
+                  }
+                  onError={(e) => { e.target.src = "https://placehold.co/300x300?text=No+Image" }}
+                  alt={prod.name || prod.title}
+                />
               </div>
 
               <div className="product-count">
-                <h3 className="product-titel">{prod.title}</h3>
+                <h3 className="product-titel">{prod.name || prod.title}</h3>
 
                 <div className="product-prices">
                   <span className="product-price">${prod.price}</span>
