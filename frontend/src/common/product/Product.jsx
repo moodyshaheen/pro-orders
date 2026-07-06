@@ -114,12 +114,13 @@ function Product() {
               <div className="productImageWrapper">
                 <img 
                   src={
-                    prod.image
-                      ? prod.image.startsWith('data:') || prod.image.startsWith('http')
-                        ? prod.image
-                        : url + "/images/" + prod.image
-                      : "https://via.placeholder.com/150"
-                  } 
+                    prod.image && (prod.image.startsWith('data:') || prod.image.startsWith('http'))
+                      ? prod.image
+                      : prod.image
+                        ? url + "/images/" + prod.image
+                        : "https://placehold.co/300x300?text=No+Image"
+                  }
+                  onError={(e) => { e.target.src = "https://placehold.co/300x300?text=No+Image" }}
                   alt={prod.name || prod.title} 
                 />
               </div>
