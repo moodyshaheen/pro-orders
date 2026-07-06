@@ -1,5 +1,6 @@
 import proModel from "../models/proModel.js";
 import { v2 as cloudinary } from "cloudinary";
+import { connectDb } from "../config/db.js";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -33,6 +34,7 @@ const isDbConnected = () => {
 // Add product
 export const addPro = async (req, res) => {
   try {
+    await connectDb();
     console.log("📝 Adding product with data:", req.body);
     console.log("📷 Image file:", req.file ? "Present" : "Not provided");
 
@@ -193,6 +195,7 @@ export const updatePro = async (req, res) => {
 // List all products
 export const listPro = async (req, res) => {
   try {
+    await connectDb();
     if (isDbConnected()) {
       const products = await proModel.find({}).sort({ createdAt: -1 });
       res.json({ success: true, data: products });

@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import validator from "validator";
+import { connectDb } from "../config/db.js";
 
 // Temporary in-memory storage when DB is not connected
 let tempUsers = [];
@@ -20,8 +21,8 @@ const createToken = (id, userData = {}) => {
 // Login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
   try {
+    await connectDb();
     console.log("🔐 Login attempt for email:", email);
 
     // Validate input
@@ -92,8 +93,8 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, passwordConfirm, confirmPassword } = req.body;
   const passConfirm = passwordConfirm || confirmPassword;
-
   try {
+    await connectDb();
     console.log("📝 Registration attempt for:", email);
 
     // Validate required fields
