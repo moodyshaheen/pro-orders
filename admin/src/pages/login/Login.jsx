@@ -3,10 +3,6 @@ import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL || "https://pro-orders-u15h.vercel.app";
 
-// Admin credentials (hardcoded for simplicity)
-const ADMIN_EMAIL = "admin@modernstore.com";
-const ADMIN_PASSWORD = "admin123";
-
 function AdminLogin({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +14,6 @@ function AdminLogin({ onLogin }) {
     setError("");
     setLoading(true);
 
-    // Simple admin check
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      localStorage.setItem("adminToken", "admin-logged-in");
-      onLogin();
-      setLoading(false);
-      return;
-    }
-
-    // Try backend login
     try {
       const res = await axios.post(`${url}/api/user/login`, { email, password });
       if (res.data.success) {
@@ -113,7 +100,7 @@ function AdminLogin({ onLogin }) {
         </form>
 
         <p style={{ textAlign: "center", marginTop: "20px", fontSize: "12px", color: "#9ca3af" }}>
-          Default: admin@modernstore.com / admin123
+          Sign in with your registered account
         </p>
       </div>
     </div>

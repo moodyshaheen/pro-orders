@@ -13,7 +13,7 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("adminToken") || localStorage.getItem("token");
       
       if (!token) {
         console.error("No token found");
