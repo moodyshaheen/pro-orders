@@ -18,15 +18,14 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 
 // CORS configuration for production
 app.use(cors({
-    origin: [
-        'https://modernstore-v1.surge.sh',
-        'https://modernstore-admin-v1.surge.sh',
-        'https://pro-orders-6k2c.vercel.app',
-        'https://pro-orders-8k3w.vercel.app',
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'http://localhost:5174'
-    ],
+    origin: function(origin, callback) {
+        // Allow all vercel.app subdomains + localhost
+        if (!origin || origin.match(/https:\/\/.*\.vercel\.app$/) || origin.includes('localhost') || origin.includes('surge.sh')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
